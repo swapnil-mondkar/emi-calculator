@@ -1,61 +1,139 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💸 EMI Calculator System (Laravel 12)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel 12 application that allows an admin to manage EMI rules based on loan amount ranges and tenure, and provides a public EMI calculator for users — no login required for users.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📦 Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👨‍💼 Admin
+- Admin authentication (login/logout)
+- Manage loan tenures (`Months`)
+- Manage EMI rules (`EMI Combinations`) using:
+  - Minimum Amount
+  - Maximum Amount
+  - Tenure (Months)
+  - Interest Rate (%)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👥 Public User
+- No login required
+- Public EMI Calculator where users can:
+  - Enter loan amount
+  - Choose tenure
+  - View EMI, total interest, and total payable amount
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Setup Instructions
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Clone the repository**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/swapnil-mondkar/emi-calculator.git
+cd emi-calculator
+```
 
-## Laravel Sponsors
+2. **Install dependencies**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+npm install && npm run build
+```
 
-### Premium Partners
+3. **Environment setup**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+4. **Database setup**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Configure your database in `.env`:
 
-## Code of Conduct
+```env
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Run migrations and seed admin user:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Serve the app**
 
-## License
+```bash
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+---
+
+## 🔑 Default Admin Credentials
+
+```txt
+Email: admin@example.com
+Password: password123
+```
+
+---
+
+## 🌐 Routes List
+
+### 🔐 Admin Routes (Login Required)
+
+| Method | URI                  | Name               | Description               |
+|--------|----------------------|--------------------|---------------------------|
+| GET    | /admin/login         | admin.login        | Show admin login form     |
+| POST   | /admin/login         | —                  | Process admin login       |
+| POST   | /admin/logout        | admin.logout       | Logout admin              |
+| GET    | /admin/dashboard     | admin.dashboard    | Admin dashboard           |
+
+#### 📅 Month (Tenure) Management
+
+| Method | URI           | Name            | Description              |
+|--------|---------------|-----------------|--------------------------|
+| GET    | /months       | months.index    | List all months          |
+| GET    | /months/create| months.create   | Show create form         |
+| POST   | /months       | months.store    | Store new month          |
+| GET    | /months/{id}/edit | months.edit  | Show edit form           |
+| PUT    | /months/{id}  | months.update   | Update month             |
+| DELETE | /months/{id}  | months.destroy  | Delete month             |
+
+#### 📈 EMI Rule Management
+
+| Method | URI         | Name          | Description              |
+|--------|-------------|---------------|--------------------------|
+| GET    | /emi        | emi.index     | List all EMI rules       |
+| GET    | /emi/create | emi.create    | Show create form         |
+| POST   | /emi        | emi.store     | Store new EMI rule       |
+| GET    | /emi/{id}/edit | emi.edit    | Show edit form           |
+| PUT    | /emi/{id}   | emi.update    | Update EMI rule          |
+| DELETE | /emi/{id}   | emi.destroy   | Delete EMI rule          |
+
+---
+
+### 🧮 Public Calculator Routes
+
+| Method | URI          | Name               | Description                  |
+|--------|--------------|--------------------|------------------------------|
+| GET    | /calculator  | calculator.form     | Show EMI calculator form     |
+| POST   | /calculator  | calculator.calculate| Calculate EMI and show result|
+
+---
+
+## 🛠 Tech Stack
+
+- Laravel 12
+- Blade Templates
+- MySQL
+
+---
+
+## ✅ License
+
+This project is open-sourced for learning purposes. Feel free to use, modify, and contribute!
